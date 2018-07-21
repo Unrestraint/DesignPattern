@@ -17,11 +17,11 @@ import java.util.Observable;
 
 //java示例
 class Subject  extends Observable {
-    public void setMessage(String msg){
+    void setMessage(String msg){
         this.setChanged();
         this.notifyObservers(msg);
     }
-    public String getInfo(){
+    String getInfo(){
         return "subject";
     }
 }

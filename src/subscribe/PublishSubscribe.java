@@ -46,6 +46,13 @@ class PublishSubscribeBroker implements Broker{
 
     @Override
     public void addSubscribe(String queue, Subscribe sub) {
+        if(sub==null||queue==null){
+            throw new NullPointerException();
+        }
+        if(queue.isEmpty()){
+            throw new RuntimeException("queue cannot be empty");
+        }
+
         ArrayList<Subscribe> list = map.get(queue);
         //该情况有可能发生一个问题，订阅表有一个订阅者正在删除，第一个新的订阅者在删除前获取了表，第二个订阅者在删除后新建了表
         //因为map.get有可能返回null,不能对其进行加锁，所以先获取list
@@ -72,6 +79,7 @@ class PublishSubscribeBroker implements Broker{
         //获取的表和map中不一样或者因为删除map中没有表了，重新尝试
         addSubscribe(queue,sub);
     }
+
 
     @Override
     public void deleteSubscribe(String queue, Subscribe sub) {
